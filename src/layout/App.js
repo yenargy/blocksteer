@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from '../logo.svg';
+import React, { useState, useEffect }  from 'react';
+import Web3 from 'web3';
 import '../styles/App.css';
 
+import { Main, Header, Button, Card, FloatIndicator} from '@aragon/ui';
+
 function App() {
+  // Web3 initialization
+  const web3 = new Web3(Web3.givenProvider);
+
+  // Declare a new state variable, which we'll call "count"
+  const [blocks, setBlocks] = useState([]);
+  const [count, setCount] = useState(0);
+
+  // get blocks
+  async function fetchBlocks(cap) {
+    const latest = await web3.eth.getBlockNumber();
+    for (let i = 0; i < cap; i++) {
+      const block = await web3.eth.getBlock(latest - i);
+      setBlocks(blocks => [...blocks, block]);
+    }
+  }
+
+  useEffect(() => {
+    const blockCap = 10;
+    fetchBlocks(blockCap);
+    //eslint-disable-next-line
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ethereum Block Explorer
-        </a>
-      </header>
-    </div>
+    <Main>
+      <Header
+        primary="Ethereum Block Explorer"
+        secondary={<Button mode="strong" label="Action Button" onClick={() => setCount(count + 1)} />}
+      />
+      {blocks.length === 0 && <FloatIndicator>Fetching latest Ethereum Blocks...</FloatIndicator>}
+      <div>
+        {count}
+        {blocks.map(block => 
+          <Card key={block.hash}>
+            <p>#{block.number}</p>
+            <p>{block.transactions.length} Transactions</p>
+          </Card>
+        )}
+        
+      </div>
+    </Main>
   );
 }
 
