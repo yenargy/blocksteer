@@ -43,7 +43,7 @@ function BlockDetails() {
           entries={[{ 
               blockNum: block.number, 
               hash: block.hash,
-              gasUsed: block.gasUsed,
+              gasUsed: (block.gasUsed/block.gasLimit * 100).toFixed(2) + '%',
               timestamp: block.timestamp,
             }
           ]}
@@ -66,7 +66,7 @@ function BlockDetails() {
               from={transaction.from}
               to={transaction.to}
               value={transaction.value}
-              gas={transaction.gas}
+              txFee={transaction.txFee}
             />
           )}
         </TransactionsContainer>

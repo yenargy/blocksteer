@@ -54,6 +54,11 @@ export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (di
 
   for (let i = 0; i < transactionsCap ; i++) {
     let transaction = await web3.eth.getTransaction(blockTransactions[i]);
+    let transactionReciept = await web3.eth.getTransactionReceipt(blockTransactions[i]);
+    transaction.gasPrice = web3.utils.fromWei(transaction.gasPrice.toString(), 'ether');
+    transaction.value = web3.utils.fromWei(transaction.value.toString(), 'ether');
+    transaction.txFee = transactionReciept.gasUsed * Number(transaction.gasPrice);
+    _.merge(transaction, _.pick(transactionReciept, ['status', 'contractAddress']))
     transactions.push(transaction);
   }
 
