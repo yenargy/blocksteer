@@ -30,7 +30,6 @@ function Home() {
             <Block data={block}/>
           </Link>
         )}
-        
       </BlocksContainer>
     </>
   );
@@ -40,6 +39,7 @@ function Home() {
 const BlocksContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 export default Home;

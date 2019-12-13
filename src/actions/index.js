@@ -1,6 +1,10 @@
 import Web3 from 'web3';
 import _ from 'lodash';
-import { FETCH_LATEST_BLOCKS, FETCH_BLOCK } from './types';
+import { 
+  FETCH_LATEST_BLOCKS, 
+  FETCH_BLOCK,
+  LOADING_BLOCK_TRANSACTIONS,
+  SUCCESS_LOADING_BLOCK_TRANSACTIONS } from './types';
 
 // Web3 initialization
 const web3 = new Web3(Web3.givenProvider);
@@ -15,26 +19,44 @@ export const fetchLatestBlocks = () => async dispatch => {
 
   for (let i = 0; i < maxBlocks; i++) {
     let block = await web3.eth.getBlock(latestBlock - i);
-    console.log('Got block', block);
     blocks.push(block);
   }
 
+  console.log('Got blocks', blocks);
   dispatch({ type: FETCH_LATEST_BLOCKS, payload: blocks });
 };
 
 export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
+  console.log('fetchBlock action', blockNumber);
+
   const { blocks } = getState();
   let block;
-
   if (blocks.length > 0) {
-    block = _.find(blocks, function(b) { return b.number === blockNumber; });
-  } 
-  
-  if (!block || !blocks.length) {
-    console.log('fetchBlock action', blockNumber);
+    console.log('Finding from previously fetched block list');
+    block = _.find(blocks, function(b) { 
+      return b.number.toString() === blockNumber.toString(); 
+    });
+  } else {
+    console.log('Fetching block from web3');
     block = await web3.eth.getBlock(blockNumber);
-    console.log('Got block', block); 
   }
 
+  console.log('Got block', block);
+  dispatch(fetchTransactionDetailsFromBlock(block.transactions));
   dispatch({ type: FETCH_BLOCK, payload: block });
+};
+
+export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (dispatch) => {
+  console.log('fetch transaction action');
+  dispatch({ type: LOADING_BLOCK_TRANSACTIONS });
+  let transactions = [];
+  const transactionsCap = blockTransactions.length > 20 ? 20 : blockTransactions.length;
+
+  for (let i = 0; i < transactionsCap ; i++) {
+    let transaction = await web3.eth.getTransaction(blockTransactions[i]);
+    transactions.push(transaction);
+  }
+
+  console.log('Got transactions', transactions);
+  dispatch({ type: SUCCESS_LOADING_BLOCK_TRANSACTIONS, payload: transactions });
 };

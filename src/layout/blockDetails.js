@@ -1,6 +1,6 @@
 import React, { useEffect }  from 'react';
 import { useParams, useHistory } from "react-router-dom";
-// import styled from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { BackButton, Bar, DataView } from '@aragon/ui';
 
 // Redux
@@ -9,16 +9,22 @@ import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { fetchBlock } from '../actions';
 
+// Components Imports
+import Transaction from '../components/transaction';
+
 
 function BlockDetails() {
   let { id } = useParams();
   let history = useHistory();
 
-  const { block } = useSelector(state => ({
+  const { block, blockTransactions, loading } = useSelector(state => ({
     block: state.block,
+    blockTransactions: state.blockTransactions.list,
+    loading: state.blockTransactions.loading
   }));
+
   const dispatch = useDispatch();
- 
+
   useEffect(() => {
     console.log('calling fetch blocks');
     dispatch(fetchBlock(id));
@@ -27,10 +33,10 @@ function BlockDetails() {
   function goBack() {
     history.push("/");
   }
-  console.log(block);
   return (
     <div>
       <Bar primary={<BackButton onClick={() => goBack()} />} />
+      <h2>Block Details</h2>
       {block.length !== 0 && 
         <DataView
           fields={['Block#', 'Hash', 'Gas Used', 'Timestamp']}
@@ -51,9 +57,30 @@ function BlockDetails() {
           }}
         />
       }
+      <h2>Transactions</h2>
+      {!loading ? (
+        <TransactionsContainer>
+          {blockTransactions.map((transaction) =>
+            <Transaction
+              key={transaction.hash}
+              from={transaction.from}
+              to={transaction.to}
+              value={transaction.value}
+              gas={transaction.gas}
+            />
+          )}
+        </TransactionsContainer>
+      ) : ('Loading')}
 
     </div>
   );
 }
+
+
+const TransactionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 export default BlockDetails;
