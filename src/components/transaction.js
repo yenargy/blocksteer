@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-// import moment from 'moment';
-import { Card, textStyle, GU} from '@aragon/ui';
+import { textStyle } from '@aragon/ui';
 
 // Components Imports
 import SmartAddress from './smartAddress';
@@ -9,10 +8,28 @@ import SmartAddress from './smartAddress';
 function Transaction(props) {
   return (
     <TransactionRow>
-    <p css={`${textStyle("address2")};`}>From: <SmartAddress address={props.from}/></p>
-    <p css={`${textStyle("address2")};`}>to: <SmartAddress address={props.to}/></p>
-    <p css={`${textStyle("label2")};`}>TxFee: {props.txFee}</p>
-    <p css={`${textStyle("label2")};`}>Value: {props.value}</p>
+      <p css={`${textStyle("address2")};`}>
+        <span css={`${textStyle("label2")};`}>From: </span>
+        <SmartAddress address={props.from}/>
+      </p>
+      {props.to ?
+        <p css={`${textStyle("address2")};`}>
+          <span css={`${textStyle("label2")};`}>To: </span>
+          <SmartAddress address={props.to}/>
+        </p> :
+        <p css={`${textStyle("address2")};`}>
+          <span css={`${textStyle("label2")};`}>Contract Creation: </span>
+          <SmartAddress address={props.contractAddress}/>
+        </p>
+      }
+      <p css={`${textStyle("address2")};`}>
+        <span css={`${textStyle("label2")};`}>TxFee: </span>
+        {props.txFee.toFixed(6)} ETH
+      </p>
+      <p css={`${textStyle("address2")};`}>
+        <span css={`${textStyle("label2")};`}>Value: </span>
+        {Number(props.value).toFixed(6)} ETH
+      </p>
     </TransactionRow>
   );
 }

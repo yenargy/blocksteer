@@ -14,7 +14,7 @@ export const fetchLatestBlocks = () => async dispatch => {
   console.log('fetchLatestBlocks action');
   const latestBlock = await web3.eth.getBlockNumber();
 
-  let maxBlocks = 10;
+  let maxBlocks = 12;
   let blocks = []
 
   for (let i = 0; i < maxBlocks; i++) {
@@ -59,7 +59,7 @@ export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (di
     transaction.value = web3.utils.fromWei(transaction.value.toString(), 'ether');
     transaction.txFee = transactionReciept.gasUsed * Number(transaction.gasPrice);
     _.merge(transaction, _.pick(transactionReciept, ['status', 'contractAddress']))
-    transactions.push(transaction);
+    transactions.push(transaction); 
   }
 
   console.log('Got transactions', transactions);

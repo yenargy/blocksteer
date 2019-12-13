@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <Header
       css={`display: flex; justify-content: center;`}
-      primary="Ethereum Block Explorer"
+      primary="Blocksteer"
     />
   );
 }

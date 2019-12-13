@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components/macro';
-import { BackButton, Bar, DataView } from '@aragon/ui';
+import { BackButton, Bar, DataView, LoadingRing } from '@aragon/ui';
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -61,16 +61,10 @@ function BlockDetails() {
       {!loading ? (
         <TransactionsContainer>
           {blockTransactions.map((transaction) =>
-            <Transaction
-              key={transaction.hash}
-              from={transaction.from}
-              to={transaction.to}
-              value={transaction.value}
-              txFee={transaction.txFee}
-            />
+            <Transaction {...transaction} key={transaction.hash}/>
           )}
         </TransactionsContainer>
-      ) : ('Loading')}
+      ) : <LoadingRing />}
 
     </div>
   );
