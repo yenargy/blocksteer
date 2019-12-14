@@ -2,7 +2,7 @@ import React, { useEffect }  from 'react';
 import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
 import { useDispatch, useSelector } from "react-redux";
-import { FloatIndicator, GU } from '@aragon/ui';
+import { SyncIndicator , GU } from '@aragon/ui';
 
 // Actions
 import { fetchLatestBlocks } from '../actions';
@@ -24,11 +24,11 @@ function Home() {
     }
     dispatch(fetchLatestBlocks());
     // eslint-disable-next-line
-  }, [dispatch])  
+  }, [dispatch])
 
   return (
     <>
-      {blocks.length === 0 && <FloatIndicator>Fetching latest Ethereum Blocks...</FloatIndicator>}
+      {blocks.length === 0 && <SyncIndicator label="Fetching latest Ethereum Blocks..." />}
       <BlocksContainer>
         {blocks.map((block) =>
           <Link to={`/block/${block.number}`} key={block.hash} css={`text-decoration: none; margin: ${2 * GU}px`}>
@@ -40,11 +40,10 @@ function Home() {
   );
 }
 
-
 const BlocksContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export default Home;

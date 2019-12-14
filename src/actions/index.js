@@ -7,14 +7,23 @@ import {
   SUCCESS_LOADING_BLOCK_TRANSACTIONS } from './types';
 
 // Web3 initialization
-const web3 = new Web3(Web3.givenProvider);
+let web3 = null;
+if (Web3.givenProvider) {
+  web3 = new Web3(Web3.givenProvider);
+  console.log(web3);
+} else {
+  console.log('in herer');
+  web3 = new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/968f87f2a22c46aaba8a771d558eb493")
+  console.log(web3);
+}
+
 
 
 export const fetchLatestBlocks = () => async dispatch => {
   console.log('fetchLatestBlocks action');
   const latestBlock = await web3.eth.getBlockNumber();
 
-  let maxBlocks = 12;
+  let maxBlocks = 16;
   let blocks = []
 
   for (let i = 0; i < maxBlocks; i++) {

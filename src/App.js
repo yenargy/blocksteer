@@ -8,12 +8,12 @@ import { Main } from '@aragon/ui';
 
 // Components Imports
 import Navbar from './layout/navbar';
-import Blocks from './layout/home';
+import Home from './layout/home';
 import BlockDetails from './layout/blockDetails';
 
 function App() {
   return (
-    <Main>
+    <Main>  
       <Navbar />
       <Router>
         <Switch>
@@ -21,12 +21,13 @@ function App() {
             <BlockDetails />
           </Route>
           <Route path="/">
-            <Blocks />
+            <Home />
           </Route>
         </Switch>
       </Router>
     </Main>
   );
 }
+
 
 export default App;
