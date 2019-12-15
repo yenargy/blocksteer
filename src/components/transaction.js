@@ -21,7 +21,7 @@ function Transaction(props) {
         <TransactionMetaDetails>
           {props.showBlockNumber && 
             <BlockLink to={`/block/${props.blockNumber}`}>
-              <TransactionItem css={`margin-right: 35px;`} hoverEnabled>
+              <TransactionItem hoverEnabled>
                 <IconBlock size="small" css={`opacity: 0.6;`} />
                 {props.blockNumber}
               </TransactionItem>
@@ -31,7 +31,7 @@ function Transaction(props) {
             <Toast>
               {toast => (
                 <TransactionItem
-                  css={`margin-right: 35px;`}
+                  css={`margin-right: 65px;`}
                   hoverEnabled
                   onClick={() => copyTextToClipboard(props.hash) ? toast("Transaction hash copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
                   {'#'}
@@ -95,6 +95,8 @@ const BlockLink = styled(Link)`
   text-decoration: none;
   margin-right: 25px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const TransactionRow = styled(BlockCard)`
