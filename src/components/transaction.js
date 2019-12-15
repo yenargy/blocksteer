@@ -101,6 +101,10 @@ const TransactionRow = styled(BlockCard)`
   display: flex;
   width: 100%;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 25px;
+  }
 `;
 
 const TransactionMetaDetails = styled.div`
@@ -113,7 +117,7 @@ const TransferDetails = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
-    margin: 15px 0;
+    margin: 16px 0;
   }
 `;
 
@@ -150,12 +154,17 @@ const StatusBar = styled.div`
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
 `;
+
 const PaddedContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
   padding: 24px;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+  }
 `;
 
 export default Transaction;

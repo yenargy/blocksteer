@@ -227,6 +227,7 @@ const BlocksContainer = styled.div`
 
   @media (max-width: 768px) {
     justify-content: center;
+    padding: 10px;
   }
 `;
 

@@ -233,7 +233,7 @@ const EmptyTransactions = styled.div`
 
 const BlockDetailsContainer = styled.div`
   @media (max-width: 768px) {
-    padding: 5px; 
+    padding: 10px; 
   }
 `;
 
