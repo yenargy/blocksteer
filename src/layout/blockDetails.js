@@ -119,12 +119,101 @@ function BlockDetails() {
         </svg>
         <h1 css={`${textStyle("title2")};`}>Transactions</h1>
       </TransactionsHeader>
-      {!loading && blockTransactions.length > 0 ? (
+      {!loading ? (
+        blockTransactions.length > 0 ?
         <TransactionsContainer>
           {blockTransactions.map((transaction) =>
             <Transaction {...transaction} key={transaction.hash}/>
           )}
-        </TransactionsContainer>
+        </TransactionsContainer> 
+        :
+        <EmptyTransactions>
+          <svg width="134" height="144" viewBox="0 0 134 144" fill="none" xmlns="http://www.w3.org/2000/svg" css={`margin-bottom: 25px;`}>
+            <path d="M63.9083 85C63.9083 85 62.733 126.921 32.351 137.802C1.96902 148.683 9.45653 118.207 17.7068 121.301C25.9571 124.395 22.657 130.376 18.5318 134.089C14.4067 137.802 1 128.52 1 128.52" stroke="#A7B6BA" strokeWidth="1.10875" strokeLinecap="round" strokeDasharray="2.22 3.33"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M124.684 17.9676C123.749 17.2623 123.561 15.9304 124.267 14.9945C124.972 14.0586 126.304 13.8714 127.24 14.5767C128.176 15.282 128.363 16.614 127.658 17.5499C126.952 18.4858 125.62 18.6728 124.684 17.9676Z" fill="#F5A623"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M122.639 9.58741C123.049 9.89621 122.482 11.3405 121.372 12.8134C120.262 14.2863 119.03 15.2296 118.62 14.9208C118.322 14.7589 118.03 14.5692 117.746 14.3545C117.46 14.1395 117.197 13.911 116.954 13.6729C117.371 13.9693 118.599 13.0267 119.706 11.558C120.813 10.0892 121.379 8.64936 120.977 8.33469C121.276 8.49715 121.569 8.68757 121.854 8.90251C122.138 9.11648 122.401 9.34506 122.643 9.58251C122.404 9.40694 122.403 9.409 122.639 9.58741Z" fill="#F5A623"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M120.862 15.7208C121.354 15.7803 122.264 15.112 123.046 14.0744C123.827 13.0369 124.219 11.9783 124.021 11.5289C124.566 12.7122 124.581 13.9064 123.944 14.7515C123.308 15.5956 122.155 15.9117 120.862 15.7208Z" fill="#F5A623"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M118.891 7.60105C119.302 7.91083 118.916 9.11633 118.029 10.2939C117.141 11.4715 116.089 12.1744 115.678 11.8646C115.629 11.8281 115.593 11.7802 115.566 11.7217L115.551 11.6851C115.034 10.5121 115.028 9.33898 115.655 8.507C116.282 7.67476 117.411 7.35698 118.681 7.53037L118.721 7.53498C118.786 7.54288 118.842 7.56451 118.891 7.60105Z" fill="#F5A623"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M120.195 20.1732L120.174 20.2014C120.102 20.2952 120.024 20.3864 119.938 20.4722C119.657 20.756 119.309 20.984 118.909 21.1294C117.456 21.6579 115.85 20.9089 115.321 19.4556C114.793 18.0024 115.542 16.3965 116.995 15.868C117.396 15.7223 117.808 15.6735 118.206 15.7094C118.326 15.7205 118.444 15.7389 118.561 15.765L118.596 15.7727L122.792 16.7378L120.195 20.1732Z" fill="#FFD927"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M128.122 9.65327L128.143 9.62516C128.214 9.52974 128.28 9.42959 128.339 9.32399C128.534 8.9749 128.657 8.57928 128.687 8.15373C128.794 6.61078 127.632 5.27375 126.089 5.16614C124.547 5.05872 123.209 6.22111 123.102 7.76406C123.072 8.18884 123.139 8.5991 123.283 8.97176C123.327 9.08347 123.377 9.1926 123.434 9.2971L123.452 9.32801L125.536 13.0957L128.122 9.65327Z" fill="#FFD927"/>
+            <g filter="url(#filter0_di)">
+            <path d="M55.8628 31.6079C55.8628 28.5107 58.0371 27.2554 60.7193 28.8039L97.1434 49.8334C99.8256 51.3819 102 55.148 102 58.2451L102 100.304C102 103.401 99.8256 104.657 97.1434 103.108L80.3366 93.4046C79.4186 92.8745 78.5194 92.6558 77.7432 92.7738L63.3127 94.9662C60.0789 95.4576 55.8628 90.3402 55.8628 85.9237L55.8628 31.6079Z" fill="white"/>
+            </g>
+            <g filter="url(#filter1_di)">
+            <path d="M11 58.2451C11 55.1479 13.1743 51.3818 15.8565 49.8333L52.2806 28.8038C54.9628 27.2553 57.1371 28.5106 57.1371 31.6078L57.1371 83.0306C57.1371 87.1474 53.4236 92.005 50.2016 92.1029L35.0555 92.5632C34.4057 92.5829 33.6956 92.8085 32.9765 93.2237L15.8565 103.108C13.1744 104.656 11 103.401 11 100.304L11 58.2451Z" fill="white"/>
+            </g>
+            <path d="M45.5 97.5002C45.5 97.5002 62.2987 91.6628 67.5 69C70.2656 56.9501 37 51 60 24C83 -3 109.125 16.1323 97.5764 19.8852C91.719 21.7887 86.2346 17.0569 91.9969 11.5363C97.7593 6.0157 110.827 8.54355 110.827 8.54355" stroke="#A7B6BA" strokeWidth="0.991237" strokeLinecap="round" strokeDasharray="1.98 2.97"/>
+            <g filter="url(#filter2_di)">
+            <rect width="53.2746" height="53.2746" rx="5.60785" transform="matrix(0.866025 -0.5 2.20305e-08 1 55.8628 77.8726)" fill="white"/>
+            </g>
+            <g filter="url(#filter3_di)">
+            <rect width="53.2746" height="53.2746" rx="5.60785" transform="matrix(0.866025 0.5 -2.20305e-08 1 11 51.2354)" fill="white"/>
+            </g>
+            <defs>
+            <filter id="filter0_di" x="48.4799" y="28.1406" width="60.903" height="90.3964" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dy="7.38291"/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 1 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="6.49109"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.355328 0 0 0 0 0.450202 0 0 0 0 0.517969 0 0 0 0.71 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow"/>
+            </filter>
+            <filter id="filter1_di" x="3.61709" y="28.1406" width="60.903" height="90.3964" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dy="7.38291"/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 1 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="6.49109"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.355328 0 0 0 0 0.450202 0 0 0 0 0.517969 0 0 0 0.71 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow"/>
+            </filter>
+            <filter id="filter2_di" x="48.4799" y="53.376" width="60.903" height="90.3964" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dy="7.38291"/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 1 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 0.71 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow"/>
+            </filter>
+            <filter id="filter3_di" x="3.61709" y="53.376" width="60.903" height="90.3964" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dy="7.38291"/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 1 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset/>
+            <feGaussianBlur stdDeviation="3.69145"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.866667 0 0 0 0 0.894118 0 0 0 0 0.913725 0 0 0 0.71 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow"/>
+            </filter>
+            </defs>
+          </svg>
+          Uh oh! Looks like there are no transactions performed in this block!
+        </EmptyTransactions>
         ) : (
           <Loader text="Fetching the latest Transactions from this block... Hang Tight!" />
         )
@@ -132,6 +221,15 @@ function BlockDetails() {
     </BlockDetailsContainer>
   );
 }
+
+const EmptyTransactions = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 25px;
+`;
 
 const BlockDetailsContainer = styled.div`
   @media (max-width: 768px) {

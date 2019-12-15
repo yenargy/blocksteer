@@ -20,8 +20,6 @@ if (Web3.givenProvider) {
   console.log(web3);
 }
 
-
-
 export const fetchLatestBlocks = () => async dispatch => {
   console.log('fetchLatestBlocks action');
   dispatch({ type: LOADING_BLOCKS });
@@ -66,8 +64,11 @@ export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   if (block.transactions.length > 0 && !sameBlock) {
     dispatch(fetchTransactionDetailsFromBlock(_.reverse(block.transactions), blockNumber));
   }
-
+  
   dispatch({ type: FETCH_BLOCK, payload: block });
+  if (!block.transactions.length) {
+    dispatch({ type: SUCCESS_LOADING_BLOCK_TRANSACTIONS, payload: [] });
+  }
 };
 
 export const fetchTransactionDetailsFromBlock = (blockTransactionHashes) => async (dispatch) => {
