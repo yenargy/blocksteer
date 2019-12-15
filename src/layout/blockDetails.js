@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components/macro';
-import { IconArrowLeft, textStyle, ToastHub, Toast } from '@aragon/ui';
+import { IconArrowLeft, textStyle, ToastHub, Toast, useViewport} from '@aragon/ui';
 import moment from 'moment';
 
 // Redux
@@ -13,6 +13,7 @@ import { fetchBlock } from '../actions';
 // Components Imports
 import Transaction from '../components/transaction';
 import Loader from '../components/loader';
+import SmartAddress from '../components/smartAddress';
 
 // Utils
 import { copyTextToClipboard } from '../utils';
@@ -24,6 +25,7 @@ import { BlockCard, hoverBg } from '../styles/Common';
 function BlockDetails() {
   let { id } = useParams();
   let history = useHistory();
+  const { below } = useViewport();
 
   const { block, blockTransactions, loading } = useSelector(state => ({
     block: state.block,
@@ -44,7 +46,7 @@ function BlockDetails() {
   }
 
   return (
-    <div>
+    <BlockDetailsContainer>
       <BackButton onClick={() => goBack()}>
         <IconArrowLeft css={`margin-right: 5px;`} size="small" />
         <p css={`${textStyle("label2")};`}>Go Back</p>
@@ -79,6 +81,11 @@ function BlockDetails() {
           <ToastHub timeout={500}>
             <Toast>
               {toast => (
+                below('large') ?
+                <Hash onClick={() => copyTextToClipboard(block.hash) ? toast("Block Hash copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
+                  {block.hash && <SmartAddress address={block.hash}/>}
+                </Hash>
+                :
                 <Hash onClick={() => copyTextToClipboard(block.hash) ? toast("Block Hash copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>{block.hash}</Hash>
               )}
             </Toast>
@@ -89,6 +96,11 @@ function BlockDetails() {
           <ToastHub timeout={500}>
             <Toast>
               {toast => (
+                below('large') ?
+                <Hash onClick={() => copyTextToClipboard(block.miner) ? toast("Miner address copied to clipboard") : toast("Failed to copy the miner address. Please try again.")}>
+                  {block.miner && <SmartAddress address={block.miner}/>}
+                </Hash>
+                :
                 <Hash onClick={() => copyTextToClipboard(block.miner) ? toast("Miner address copied to clipboard") : toast("Failed to copy the miner address. Please try again.")}>{block.miner}</Hash>
               )}
             </Toast>
@@ -117,9 +129,15 @@ function BlockDetails() {
           <Loader text="Fetching the latest Transactions from this block... Hang Tight!" />
         )
       }
-    </div>
+    </BlockDetailsContainer>
   );
 }
+
+const BlockDetailsContainer = styled.div`
+  @media (max-width: 768px) {
+    padding: 5px; 
+  }
+`;
 
 const TransactionsContainer = styled.div`
   display: flex;
@@ -161,6 +179,7 @@ const BlockDetailsCard = styled(BlockCard)`
 const BlockMetaDetailsContainer = styled.div`
   display: inline-flex;
   width: 100%;
+  flex-wrap: wrap;
 `;
 
 const BlockMetaDetails = styled.div`
@@ -193,6 +212,10 @@ const BlockMoreDetails = styled.div`
   label {
     width: 12%;
     ${textStyle("label1")};
+
+    @media (max-width: 768px) {
+      width: 25%;
+    }
   }
 `;
 

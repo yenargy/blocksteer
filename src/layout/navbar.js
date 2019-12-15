@@ -9,7 +9,7 @@ function Navbar() {
   return (
     <Bg>
       <Header
-        css={`display: flex; justify-content: center; margin-bottom: 75px;`}
+        css={`display: flex; justify-content: center; margin-bottom: 75px; background: transparent;`}
         primary={
           <div>
             <svg width="180" height="50" viewBox="0 0 236 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +89,7 @@ const Bg = styled.div`
     left: 0;
     height: 100%;
     width: 100%;
-    background: linear-gradient(to bottom, ${darkBg} 35%, transparent 0);
+    background: linear-gradient(to bottom, ${darkBg} 400px, transparent 0);
     z-index: -1;
   }
 `;

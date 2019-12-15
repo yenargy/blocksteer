@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components/macro';
 import { Link } from "react-router-dom";
-import { textStyle, IconUser, IconCoin, IconFile, IconBlock, ToastHub, Toast } from '@aragon/ui';
+import { textStyle, IconUser, IconCoin, IconFile, IconBlock, ToastHub, Toast, useViewport } from '@aragon/ui';
 
 // Components Imports
 import SmartAddress from './smartAddress';
@@ -13,12 +13,14 @@ import { BlockCard, hoverBg, success, error } from '../styles/Common';
 import { copyTextToClipboard } from '../utils';
 
 function Transaction(props) {
+  const { below } = useViewport()
+
   return (
     <TransactionRow>
       <StatusBar status={props.status ? success : error}/>
 
       <PaddedContainer>
-        <TransferDetails>
+        <TransactionMetaDetails>
           {props.showBlockNumber && 
             <BlockLink to={`/block/${props.blockNumber}`}>
               <TransactionItem css={`margin-right: 35px;`} hoverEnabled>
@@ -39,38 +41,43 @@ function Transaction(props) {
                 </TransactionItem>
               )}
             </Toast>
-          <ToastHub timeout={500}>
-            <Toast>
-              {toast => (
-                <TransactionItem 
-                  hoverEnabled
-                  onClick={() => copyTextToClipboard(props.from) ? toast("From address copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
-                  <IconUser size="small" css={`opacity: 0.6;`} />
-                  <SmartAddress address={props.from}/>
-                </TransactionItem>
-              )}
-            </Toast>
           </ToastHub>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" css={`margin: 0 25px; opacity: 0.5;`}>
-            <path d="M7.75 0C12.0312 0 15.5 3.46875 15.5 7.75C15.5 12.0312 12.0312 15.5 7.75 15.5C3.46875 15.5 0 12.0312 0 7.75C0 3.46875 3.46875 0 7.75 0ZM4.125 9.125H7.75V11.3406C7.75 11.675 8.15625 11.8437 8.39062 11.6062L11.9625 8.01562C12.1094 7.86875 12.1094 7.63438 11.9625 7.4875L8.39062 3.89375C8.15313 3.65625 7.75 3.825 7.75 4.15938V6.375H4.125C3.91875 6.375 3.75 6.54375 3.75 6.75V8.75C3.75 8.95625 3.91875 9.125 4.125 9.125Z" fill="black"/>
-          </svg>
-          <ToastHub timeout={500}>
-            <Toast>
-              {toast => (
-                <TransactionItem 
-                  hoverEnabled
-                  onClick={() => copyTextToClipboard(props.to ? props.to : props.contractAddress) ? toast("Contract address copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
-                  {props.input === '0x' ?
+          <TransferDetails>
+            <ToastHub timeout={500}>
+              <Toast>
+                {toast => (
+                  <TransactionItem 
+                    hoverEnabled
+                    onClick={() => copyTextToClipboard(props.from) ? toast("From address copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
                     <IconUser size="small" css={`opacity: 0.6;`} />
-                    :
-                    <IconFile size="small" css={`opacity: 0.6;`} />
-                  }
-                  <SmartAddress address={props.to ? props.to : props.contractAddress}/>
-                </TransactionItem>
-              )}
-            </Toast>
-          </ToastHub>
-        </TransferDetails>
+                    <SmartAddress address={props.from}/>
+                  </TransactionItem>
+                )}
+              </Toast>
+            </ToastHub>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" 
+              css={(below('medium') ? `margin: 0 15px;` : `margin: 0 25px`)+ `opacity: 0.5;`}>
+              <path d="M7.75 0C12.0312 0 15.5 3.46875 15.5 7.75C15.5 12.0312 12.0312 15.5 7.75 15.5C3.46875 15.5 0 12.0312 0 7.75C0 3.46875 3.46875 0 7.75 0ZM4.125 9.125H7.75V11.3406C7.75 11.675 8.15625 11.8437 8.39062 11.6062L11.9625 8.01562C12.1094 7.86875 12.1094 7.63438 11.9625 7.4875L8.39062 3.89375C8.15313 3.65625 7.75 3.825 7.75 4.15938V6.375H4.125C3.91875 6.375 3.75 6.54375 3.75 6.75V8.75C3.75 8.95625 3.91875 9.125 4.125 9.125Z" fill="black"/>
+            </svg>
+            <ToastHub timeout={500}>
+              <Toast>
+                {toast => (
+                  <TransactionItem 
+                    hoverEnabled
+                    onClick={() => copyTextToClipboard(props.to ? props.to : props.contractAddress) ? toast("Contract address copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
+                    {props.input === '0x' ?
+                      <IconUser size="small" css={`opacity: 0.6;`} />
+                      :
+                      <IconFile size="small" css={`opacity: 0.6;`} />
+                    }
+                    <SmartAddress address={props.to ? props.to : props.contractAddress}/>
+                  </TransactionItem>
+                )}
+              </Toast>
+            </ToastHub>
+          </TransferDetails>
+
+        </TransactionMetaDetails>
 
         <TransferValue>
           <TransactionItem css={`margin-right: 35px;`}>
@@ -99,9 +106,18 @@ const TransactionRow = styled(BlockCard)`
   margin-bottom: 10px;
 `;
 
+const TransactionMetaDetails = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 const TransferDetails = styled.div`
   display: inline-flex;
   align-items: center;
+
+  @media (max-width: 1152px) {
+    margin: 15px 0;
+  }
 `;
 
 const TransferValue = styled.div`
@@ -142,6 +158,7 @@ const PaddedContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   padding: 24px;
+  flex-wrap: wrap;
 `;
 
 export default Transaction;
