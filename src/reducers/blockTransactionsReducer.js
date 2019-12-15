@@ -6,7 +6,7 @@ import {
 
 const initalState = {
   loading: true,
-  list: null
+  list: []
 };
 
 export default function(state = initalState, action) {
@@ -14,7 +14,7 @@ export default function(state = initalState, action) {
     case LOADING_BLOCK_TRANSACTIONS:
       return {
         loading: true,
-        list: null
+        list: []
       };
     case SUCCESS_LOADING_BLOCK_TRANSACTIONS:
       return {

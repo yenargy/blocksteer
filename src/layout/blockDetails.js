@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components/macro';
-import { LoadingRing, IconArrowLeft, textStyle } from '@aragon/ui';
+import { IconArrowLeft, textStyle } from '@aragon/ui';
 import moment from 'moment';
 
 // Redux
@@ -12,9 +12,10 @@ import { fetchBlock } from '../actions';
 
 // Components Imports
 import Transaction from '../components/transaction';
+import Loader from '../components/loader';
 
 // Styles
-import { BlockCard } from '../styles/Common';
+import { BlockCard, hoverBg } from '../styles/Common';
 
 
 function BlockDetails() {
@@ -69,26 +70,26 @@ function BlockDetails() {
           </BlockMetaDetails>
         </BlockMetaDetailsContainer>
         <Divider />
-        <BlockMoreDetails css={`margin-bottom: 25px;`}>
+        <BlockMoreDetails css={`margin-bottom: 25px;`} hoverEnabled>
           <label>Hash</label>
-          <p>{block.hash}</p>
+          <Hash>{block.hash}</Hash>
         </BlockMoreDetails>
-        <BlockMoreDetails css={`margin-bottom: 25px;`}>
+        <BlockMoreDetails css={`margin-bottom: 25px;`} hoverEnabled>
           <label>Mined By</label>
-          <p>{block.miner}</p>
+          <Hash>{block.miner}</Hash>
         </BlockMoreDetails>
         <BlockMoreDetails>
           <label>Gas Used</label>
-          <p>{(block.gasUsed/block.gasLimit * 100).toFixed(2) + '%'}</p>
+          <p css={`padding: 5px;`}>{(block.gasUsed/block.gasLimit * 100).toFixed(2) + '%'}</p>
         </BlockMoreDetails>
       </BlockDetailsCard>
 
       <TransactionsHeader>
-        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.20646 12.2732C2.26106 9.62381 3.33933 7.09847 5.21516 5.22671C6.15992 4.28195 7.25875 3.53777 8.48258 3.02033C9.75002 2.48545 11.0959 2.2122 12.4826 2.2122C13.8721 2.2122 15.218 2.48254 16.4825 3.02033C17.7064 3.53777 18.8052 4.28195 19.75 5.22671C20.0407 5.51741 20.311 5.82264 20.561 6.1395L19.1075 7.27612C19.0729 7.30291 19.0465 7.33892 19.0315 7.38002C19.0164 7.42112 19.0132 7.46564 19.0223 7.50846C19.0315 7.55128 19.0525 7.59065 19.083 7.62206C19.1135 7.65347 19.1522 7.67563 19.1947 7.686L23.7528 8.79937C23.8982 8.83425 24.0406 8.72379 24.0406 8.57553L24.0639 3.88079C24.0639 3.68603 23.8401 3.57556 23.6889 3.69765L22.2994 4.78486C20.0203 1.86918 16.4709 0 12.4855 0C5.66864 0 0.125072 5.46799 7.26914e-05 12.2616C-0.000703191 12.2926 0.00473872 12.3234 0.0160779 12.3523C0.0274171 12.3812 0.0444241 12.4076 0.0660967 12.4298C0.0877694 12.452 0.113669 12.4696 0.14227 12.4817C0.170871 12.4937 0.201594 12.4999 0.232629 12.4999H1.97681C2.1018 12.4999 2.20355 12.3982 2.20646 12.2732ZM24.7674 12.4999H23.0232C22.8982 12.4999 22.7935 12.6017 22.7906 12.7267C22.736 15.376 21.6578 17.9014 19.7819 19.7731C18.8458 20.7131 17.7362 21.4625 16.5145 21.9795C15.2471 22.5144 13.9012 22.7877 12.5145 22.7877C11.1279 22.7877 9.77909 22.5173 8.51456 21.9795C7.29289 21.4625 6.18322 20.7131 5.24714 19.7731C4.95644 19.4824 4.68609 19.1772 4.43609 18.8604L5.88667 17.7237C5.92129 17.6969 5.94765 17.6609 5.96272 17.6198C5.97779 17.5787 5.98095 17.5342 5.97184 17.4914C5.96273 17.4486 5.94172 17.4092 5.91122 17.3778C5.88073 17.3464 5.84199 17.3242 5.79946 17.3139L1.24134 16.2005C1.096 16.1656 0.953556 16.2761 0.953556 16.4243L0.9303 21.1249C0.9303 21.3196 1.15414 21.4301 1.3053 21.308L2.69482 20.2208C4.97969 23.1307 8.52909 24.9999 12.5145 24.9999C19.3314 24.9999 24.8749 19.5319 24.9999 12.7383C25.0007 12.7073 24.9953 12.6764 24.9839 12.6475C24.9726 12.6186 24.9556 12.5923 24.9339 12.5701C24.9122 12.5479 24.8863 12.5302 24.8577 12.5182C24.8291 12.5061 24.7984 12.4999 24.7674 12.4999Z" fill="black"/>
           <path d="M7.84314 17.6155C7.84314 17.015 8.32991 16.5283 8.93037 16.5283H15.8057C16.4061 16.5283 16.8929 17.015 16.8929 17.6155V17.6155C16.8929 18.216 16.4061 18.7027 15.8057 18.7027H8.93037C8.32991 18.7027 7.84314 18.216 7.84314 17.6155V17.6155ZM8.79626 12.6205C8.79626 12.0181 9.28462 11.5297 9.88705 11.5297H14.7606C15.363 11.5297 15.8513 12.0181 15.8513 12.6205V12.6205C15.8513 13.2229 15.363 13.7113 14.7606 13.7113H9.88705C9.28462 13.7113 8.79626 13.2229 8.79626 12.6205V12.6205ZM7.96105 7.73235C7.96105 7.12707 8.45173 6.6364 9.05701 6.6364H15.5218C16.1271 6.6364 16.6178 7.12707 16.6178 7.73235V7.73235C16.6178 8.33763 16.1271 8.8283 15.5218 8.8283H9.05701C8.45173 8.8283 7.96105 8.33763 7.96105 7.73235V7.73235Z" fill="black"/>
         </svg>
-        <h1 css={`${textStyle("title1")};`}>Transactions</h1>
+        <h1 css={`${textStyle("title2")};`}>Transactions</h1>
       </TransactionsHeader>
       {!loading ? (
         <TransactionsContainer>
@@ -97,21 +98,13 @@ function BlockDetails() {
           )}
         </TransactionsContainer>
         ) : (
-          <TransactionsLoading>
-            <LoadingRing css={`margin-right: 5px;`} /> Fetching the latest Transactions from this block... Hang Tight!
-          </TransactionsLoading>
+          <Loader text="Fetching the latest Transactions from this block... Hang Tight!" />
         )
       }
     </div>
   );
 }
 
-const TransactionsLoading = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
 const TransactionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -125,7 +118,7 @@ const TransactionsHeader = styled.div`
   
   svg {
     margin-right: 10px;
-    opacity: 0.4;
+    opacity: 0.2;
     margin-bottom: 5px;
   }
 `;
@@ -185,10 +178,18 @@ const BlockMoreDetails = styled.div`
     width: 12%;
     ${textStyle("label1")};
   }
-  p {
-    width: 88%;
-    ${textStyle("address1")};
-  }
-
 `;
+
+const Hash = styled.p`
+  cursor: pointer;
+  ${textStyle("address1")};
+  padding: 5px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: ${hoverBg};
+  }
+`;
+
+
 export default BlockDetails;

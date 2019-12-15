@@ -14,8 +14,8 @@ import BlockDetails from './layout/blockDetails';
 function App() {
   return (
     <Main>  
-      <Navbar />
       <Router>
+        <Navbar />
         <Switch>
           <Route path="/block/:id">
             <BlockDetails />

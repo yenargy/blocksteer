@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import moment from 'moment';
-import { textStyle, GU, IconTime} from '@aragon/ui';
+import { textStyle, GU, IconTime } from '@aragon/ui';
+
+// Styles
+import { darkBg } from '../styles/Common';
 
 function Block({data}) {
   return (
@@ -61,7 +64,8 @@ const BlockCard = styled.div`
 const BlockNumber = styled.p`
   position: absolute;
   right: 10px;
-  color: #c5ccd9;
+  color: ${darkBg};
+  opacity: 0.3;
   bottom: 0;
   font-size: 30px;
   font-weight: 600;
@@ -90,5 +94,6 @@ const BlockCardHat = styled.div`
 const TransactionCount = styled.p`
   margin: 10px 10px 50px 0;
   opacity: 0.8;
+  font-weight: 600;
 `;
 export default Block;

@@ -1,10 +1,13 @@
 import Web3 from 'web3';
 import _ from 'lodash';
 import { 
-  FETCH_LATEST_BLOCKS, 
   FETCH_BLOCK,
+  LOADING_BLOCKS,
   LOADING_BLOCK_TRANSACTIONS,
-  SUCCESS_LOADING_BLOCK_TRANSACTIONS } from './types';
+  SUCCESS_LOADING_BLOCK_TRANSACTIONS, 
+  SUCCESS_LOADING_BLOCKS,
+  SHOW_LATEST_BLOCKS
+} from './types';
 
 // Web3 initialization
 let web3 = null;
@@ -21,6 +24,8 @@ if (Web3.givenProvider) {
 
 export const fetchLatestBlocks = () => async dispatch => {
   console.log('fetchLatestBlocks action');
+  dispatch({ type: LOADING_BLOCKS });
+  dispatch({ type: SHOW_LATEST_BLOCKS, payload: true });
   const latestBlock = await web3.eth.getBlockNumber();
 
   let maxBlocks = 16;
@@ -32,7 +37,7 @@ export const fetchLatestBlocks = () => async dispatch => {
   }
 
   console.log('Got blocks', blocks);
-  dispatch({ type: FETCH_LATEST_BLOCKS, payload: blocks });
+  dispatch({ type: SUCCESS_LOADING_BLOCKS, payload: blocks });
 };
 
 export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
@@ -51,13 +56,25 @@ export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   }
 
   console.log('Got block', block);
-  dispatch(fetchTransactionDetailsFromBlock(block.transactions));
+
+  if (block.transactions.length > 0) {
+    dispatch(fetchTransactionDetailsFromBlock(block.transactions));
+  }
+
   dispatch({ type: FETCH_BLOCK, payload: block });
 };
 
 export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (dispatch) => {
   console.log('fetch transaction action');
   dispatch({ type: LOADING_BLOCK_TRANSACTIONS });
+
+  if (!blockTransactions) {
+    const latestBlock = await web3.eth.getBlockNumber();
+    dispatch({ type: SHOW_LATEST_BLOCKS, payload: false });
+    dispatch(fetchBlock(latestBlock));
+    return;
+  }
+
   let transactions = [];
   const transactionsCap = blockTransactions.length > 20 ? 20 : blockTransactions.length;
 
