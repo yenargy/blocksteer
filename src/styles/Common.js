@@ -24,9 +24,14 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
+const PlainLink = styled.div`
+  text-decoration: none;
+`;
+
 export {
   BlockCard,
   LoadingContainer,
+  PlainLink,
   hoverBg,
   success,
   error,

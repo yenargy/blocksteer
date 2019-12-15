@@ -13,13 +13,16 @@ import {
 let web3 = null;
 if (Web3.givenProvider) {
   web3 = new Web3(Web3.givenProvider);
-  console.log(web3);
 } else {
-  console.log('in herer');
-  web3 = new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/968f87f2a22c46aaba8a771d558eb493")
-  console.log(web3);
+  console.log('No metamask found. Ask user to install metamask');
 }
 
+
+/**
+ * Method which fetches the latest 16 blocks using web3
+ * No params required
+ *
+ */
 export const fetchLatestBlocks = () => async dispatch => {
   console.log('fetchLatestBlocks action');
   dispatch({ type: LOADING_BLOCKS });
@@ -38,6 +41,13 @@ export const fetchLatestBlocks = () => async dispatch => {
   dispatch({ type: SUCCESS_LOADING_BLOCKS, payload: blocks });
 };
 
+/**
+ * Fetches the block details of the passed block number
+ * This method also calls the fetch more transaction 
+ * details action internally
+ * 
+ * @param blockNumber The block number which needs to be fetched
+ */
 export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   console.log('fetchBlock action', blockNumber);
 
@@ -71,6 +81,14 @@ export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   }
 };
 
+/**
+ * Fetches the details of transactions of a given block
+ * This method calls the web3's transaction reciept to fetch
+ * more details regarding the transactions
+ * 
+ * @param blockTransactionHashes An array of transactionHashes
+ * If not passed, the transactions of the latest block will be fetched
+ */
 export const fetchTransactionDetailsFromBlock = (blockTransactionHashes) => async (dispatch) => {
   console.log('fetch transaction action');
   dispatch({ type: LOADING_BLOCK_TRANSACTIONS });

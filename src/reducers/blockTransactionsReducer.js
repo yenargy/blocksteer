@@ -1,7 +1,7 @@
 import { 
-        LOADING_BLOCK_TRANSACTIONS, 
-        SUCCESS_LOADING_BLOCK_TRANSACTIONS 
-      } from '../actions/types';
+  LOADING_BLOCK_TRANSACTIONS, 
+  SUCCESS_LOADING_BLOCK_TRANSACTIONS 
+} from '../actions/types';
 
 
 const initalState = {

@@ -18,6 +18,10 @@ import { fetchTransactionDetailsFromBlock, fetchLatestBlocks } from '../actions'
 
 
 function Home() {
+  const dispatch = useDispatch();
+  const { below } = useViewport()
+  const [checked, setChecked] = useState(false);
+
   // Theme Overrides done for the radio switch
   const theme = useTheme()
   theme.controlSurface = primary;
@@ -32,10 +36,6 @@ function Home() {
     showLatestBlocks: state.blocks.showLatestBlocks
   }));
 
-  const dispatch = useDispatch();
-  const { below } = useViewport()
-  const [checked, setChecked] = useState(false);
-
   const switchClicked = (showTransactions) => {
     setChecked(showTransactions);
     Lockr.set('showTransactions', showTransactions);
@@ -45,7 +45,6 @@ function Home() {
       dispatch(fetchLatestBlocks());
     }
   }
-
   
   useEffect(() => {    
     const initialSwitchState = Lockr.get('showTransactions');

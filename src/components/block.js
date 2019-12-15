@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import moment from 'moment';
 import { textStyle, GU, IconTime } from '@aragon/ui';
 
 // Styles
 import { darkBg } from '../styles/Common';
+
+// Utilities
+import { formatedTimeFrom } from '../utils';
 
 function Block({data}) {
   return (
@@ -20,23 +22,6 @@ function Block({data}) {
     </BlockCard>
   );
 }
-
-export const formatedTimeFrom = text => {
-  const now = moment();
-  const expiration = moment.unix(text);
-  const diff = expiration.diff(now);
-  const diffDuration = moment.duration(diff);
-
-  return [
-    diffDuration.years() > 0 ? diffDuration.years() + 'y ' : '',
-    diffDuration.months() > 0 ? diffDuration.months() + 'mo ' : '',
-    diffDuration.days() > 0 ? diffDuration.days() + 'd ' : '',
-    diffDuration.hours() > 0 ? diffDuration.hours() + 'h ' : '',
-    diffDuration.minutes() > 0 ? diffDuration.minutes() + 'm ' : '',
-    diffDuration.seconds() > 0 ? diffDuration.seconds() + 's ' : '',
-    diffDuration.seconds() < 0 ? moment.unix(text).fromNow() : '',
-  ].join('');
-};
 
 const BlockCard = styled.div`
   background: #FFFFFF;
@@ -95,4 +80,5 @@ const TransactionCount = styled.p`
   opacity: 0.8;
   font-weight: 600;
 `;
+
 export default Block;
