@@ -1,5 +1,5 @@
 {
-  "name": "ethereum-block-explorer",
+  "name": "blocksteer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
