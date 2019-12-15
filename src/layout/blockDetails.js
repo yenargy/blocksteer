@@ -33,9 +33,6 @@ function BlockDetails() {
 
   const dispatch = useDispatch();
 
-  console.log(loading);
-  console.log(blockTransactions);
-
   useEffect(() => {
     console.log('calling fetch blocks');
     dispatch(fetchBlock(id));

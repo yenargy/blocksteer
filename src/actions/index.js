@@ -43,7 +43,7 @@ export const fetchLatestBlocks = () => async dispatch => {
 export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   console.log('fetchBlock action', blockNumber);
 
-  const { blocks } = getState();
+  const { blocks, blockTransactions } = getState();
   let block;
   if (blocks.length > 0) {
     console.log('Finding from previously fetched block list');
@@ -57,18 +57,24 @@ export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
 
   console.log('Got block', block);
 
-  if (block.transactions.length > 0) {
-    dispatch(fetchTransactionDetailsFromBlock(_.reverse(block.transactions)));
+  // Determining wether we need to fetch the transactions for this block number or if already present
+  let sameBlock = false;
+  if (blockTransactions.list.length > 0 && blockTransactions.list[0].blockNumber.toString() === blockNumber.toString()) {
+    sameBlock = true;
+  }
+  
+  if (block.transactions.length > 0 && !sameBlock) {
+    dispatch(fetchTransactionDetailsFromBlock(_.reverse(block.transactions), blockNumber));
   }
 
   dispatch({ type: FETCH_BLOCK, payload: block });
 };
 
-export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (dispatch) => {
+export const fetchTransactionDetailsFromBlock = (blockTransactionHashes) => async (dispatch) => {
   console.log('fetch transaction action');
   dispatch({ type: LOADING_BLOCK_TRANSACTIONS });
 
-  if (!blockTransactions) {
+  if (!blockTransactionHashes) {
     const latestBlock = await web3.eth.getBlockNumber();
     dispatch({ type: SHOW_LATEST_BLOCKS, payload: false });
     dispatch(fetchBlock(latestBlock));
@@ -76,11 +82,11 @@ export const fetchTransactionDetailsFromBlock = (blockTransactions) => async (di
   }
 
   let transactions = [];
-  const transactionsCap = blockTransactions.length > 20 ? 20 : blockTransactions.length;
+  const transactionsCap = blockTransactionHashes.length > 20 ? 20 : blockTransactionHashes.length;
 
   for (let i = 0; i < transactionsCap ; i++) {
-    let transaction = await web3.eth.getTransaction(blockTransactions[i]);
-    let transactionReciept = await web3.eth.getTransactionReceipt(blockTransactions[i]);
+    let transaction = await web3.eth.getTransaction(blockTransactionHashes[i]);
+    let transactionReciept = await web3.eth.getTransactionReceipt(blockTransactionHashes[i]);
     transaction.gasPrice = web3.utils.fromWei(transaction.gasPrice.toString(), 'ether');
     transaction.value = web3.utils.fromWei(transaction.value.toString(), 'ether');
     transaction.txFee = transactionReciept.gasUsed * Number(transaction.gasPrice);
