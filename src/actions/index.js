@@ -101,7 +101,7 @@ export const fetchTransactionDetailsFromBlock = (blockTransactionHashes) => asyn
   }
 
   let transactions = [];
-  const transactionsCap = blockTransactionHashes.length > 20 ? 20 : blockTransactionHashes.length;
+  const transactionsCap = blockTransactionHashes.length > 12 ? 12 : blockTransactionHashes.length;
 
   for (let i = 0; i < transactionsCap ; i++) {
     let transaction = await web3.eth.getTransaction(blockTransactionHashes[i]);
