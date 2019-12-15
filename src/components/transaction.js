@@ -30,6 +30,18 @@ function Transaction(props) {
           <ToastHub timeout={500}>
             <Toast>
               {toast => (
+                <TransactionItem
+                  css={`margin-right: 35px;`}
+                  hoverEnabled
+                  onClick={() => copyTextToClipboard(props.hash) ? toast("Transaction hash copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
+                  {'#'}
+                  <SmartAddress address={props.hash}/>
+                </TransactionItem>
+              )}
+            </Toast>
+          <ToastHub timeout={500}>
+            <Toast>
+              {toast => (
                 <TransactionItem 
                   hoverEnabled
                   onClick={() => copyTextToClipboard(props.from) ? toast("From address copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>
