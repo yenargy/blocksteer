@@ -58,7 +58,7 @@ export const fetchBlock = (blockNumber) => async (dispatch, getState) => {
   console.log('Got block', block);
 
   if (block.transactions.length > 0) {
-    dispatch(fetchTransactionDetailsFromBlock(block.transactions));
+    dispatch(fetchTransactionDetailsFromBlock(_.reverse(block.transactions)));
   }
 
   dispatch({ type: FETCH_BLOCK, payload: block });

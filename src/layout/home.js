@@ -55,7 +55,7 @@ function Home() {
         :
         <div css={`padding-top: 50px; width: 100%;`}>
           {blockTransactions.map((transaction) =>
-            <Transaction {...transaction} key={transaction.hash}/>
+            <Transaction {...transaction} showBlockNumber key={transaction.hash}/>
           )}
         </div>
       )}

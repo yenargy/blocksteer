@@ -65,10 +65,9 @@ const BlockNumber = styled.p`
   position: absolute;
   right: 10px;
   color: ${darkBg};
-  opacity: 0.3;
+  opacity: 0.8;
   bottom: 0;
   font-size: 30px;
-  font-weight: 600;
   line-height: 1.5;
   font-family: aragon-ui-monospace,monospace;
 `;
