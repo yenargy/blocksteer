@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components/macro';
-import { IconArrowLeft, textStyle } from '@aragon/ui';
+import { IconArrowLeft, textStyle, ToastHub, Toast } from '@aragon/ui';
 import moment from 'moment';
 
 // Redux
@@ -13,6 +13,9 @@ import { fetchBlock } from '../actions';
 // Components Imports
 import Transaction from '../components/transaction';
 import Loader from '../components/loader';
+
+// Utils
+import { copyTextToClipboard } from '../utils';
 
 // Styles
 import { BlockCard, hoverBg } from '../styles/Common';
@@ -30,11 +33,15 @@ function BlockDetails() {
 
   const dispatch = useDispatch();
 
+  console.log(loading);
+  console.log(blockTransactions);
+
   useEffect(() => {
     console.log('calling fetch blocks');
     dispatch(fetchBlock(id));
   }, [dispatch, id])  
 
+  // Function to ge ot previous state using react router
   function goBack() {
     history.push("/");
   }
@@ -72,11 +79,23 @@ function BlockDetails() {
         <Divider />
         <BlockMoreDetails css={`margin-bottom: 25px;`} hoverEnabled>
           <label>Hash</label>
-          <Hash>{block.hash}</Hash>
+          <ToastHub timeout={500}>
+            <Toast>
+              {toast => (
+                <Hash onClick={() => copyTextToClipboard(block.hash) ? toast("Block Hash copied to clipboard") : toast("Failed to copy the block hash. Please try again.")}>{block.hash}</Hash>
+              )}
+            </Toast>
+          </ToastHub>
         </BlockMoreDetails>
         <BlockMoreDetails css={`margin-bottom: 25px;`} hoverEnabled>
           <label>Mined By</label>
-          <Hash>{block.miner}</Hash>
+          <ToastHub timeout={500}>
+            <Toast>
+              {toast => (
+                <Hash onClick={() => copyTextToClipboard(block.miner) ? toast("Miner address copied to clipboard") : toast("Failed to copy the miner address. Please try again.")}>{block.miner}</Hash>
+              )}
+            </Toast>
+          </ToastHub>
         </BlockMoreDetails>
         <BlockMoreDetails>
           <label>Gas Used</label>
@@ -91,7 +110,7 @@ function BlockDetails() {
         </svg>
         <h1 css={`${textStyle("title2")};`}>Transactions</h1>
       </TransactionsHeader>
-      {!loading ? (
+      {!loading && blockTransactions.length > 0 ? (
         <TransactionsContainer>
           {blockTransactions.map((transaction) =>
             <Transaction {...transaction} key={transaction.hash}/>
