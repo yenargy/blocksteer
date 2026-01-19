@@ -22,7 +22,7 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.1",
-    "web3": "^1.2.4"
+    "web3": "^4.16.0"
   },
   "scripts": {
     "test": "react-scripts test",
